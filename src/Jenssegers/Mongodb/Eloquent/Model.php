@@ -157,7 +157,10 @@ abstract class Model extends BaseModel
             $value = parent::asDateTime($value);
         }
 
-        return new UTCDateTime($value->getTimestamp() * 1000);
+        return new UTCDateTime(
+            $value->getTimestamp() * 1000 +
+            intval(intval($value->format('u')) / 1000)
+        );
     }
 
     /**
@@ -170,7 +173,7 @@ abstract class Model extends BaseModel
     {
         // Convert UTCDateTime instances.
         if ($value instanceof UTCDateTime) {
-            return Carbon::createFromTimestamp($value->toDateTime()->getTimestamp());
+            return Carbon::instance($value->toDateTime());
         }
 
         return parent::asDateTime($value);
@@ -183,7 +186,7 @@ abstract class Model extends BaseModel
      */
     protected function getDateFormat()
     {
-        return $this->dateFormat ?: 'Y-m-d H:i:s';
+        return $this->dateFormat ?: 'Y-m-d H:i:s.u';
     }
 
     /**
