@@ -1,6 +1,7 @@
 <?php namespace Jenssegers\Mongodb;
 
 use MongoDB\Client;
+use Jenssegers\Mongodb\Schema\Grammar;
 
 class Connection extends \Illuminate\Database\Connection
 {
@@ -25,6 +26,8 @@ class Connection extends \Illuminate\Database\Connection
      */
     public function __construct(array $config)
     {
+        $this->schemaGrammar = new Grammar();
+
         $this->config = $config;
 
         // Build the connection string
